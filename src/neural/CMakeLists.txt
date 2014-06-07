@@ -1,0 +1,8 @@
+project("neural")
+
+file(GLOB_RECURSE ${PROJECT_NAME}_HEADER_HPP "../../include/${PROJECT_NAME}/*.hpp")
+set(${PROJECT_NAME}_HEADER ${${PROJECT_NAME}_HEADER_HPP})
+file(GLOB_RECURSE ${PROJECT_NAME}_SOURCE "./*.cpp")
+
+add_library(${PROJECT_NAME} ${${PROJECT_NAME}_HEADER} ${${PROJECT_NAME}_SOURCE})
+
