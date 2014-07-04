@@ -15,13 +15,13 @@ namespace neural
  * Both are double -> double
  */
 
-namespace af
-{
-
 typedef std::pair<
     const std::function<double(double)>,
     const std::function<double(double)>
 > activation_func;
+
+namespace af
+{
 
 extern const activation_func zero;
 
