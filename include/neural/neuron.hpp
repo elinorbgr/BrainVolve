@@ -1,6 +1,7 @@
 #ifndef NEURAL_NEURON_HPP
 #define NEURAL_NEURON_HPP
 
+#include <memory>
 #include <vector>
 
 #include "neural/activationfuncs.hpp"
@@ -15,13 +16,18 @@ namespace neural
 class Neuron
 {
     private:
-        double m_value;
-        double m_error;
-        double m_value_buffer;
-        double m_error_buffer;
-        double m_bias;
-        const activation_func *m_afunc;
-        std::vector<std::pair<Neuron*,double> > m_inputs;
+        struct NeuronData
+        {
+            double value;
+            double error;
+            double value_buffer;
+            double error_buffer;
+            double bias;
+            const activation_func *afunc;
+            std::vector<std::pair<NeuronData*,double> > inputs;
+            NeuronData(const activation_func *afunc):afunc(afunc){}
+        };
+        std::unique_ptr<NeuronData> m_ineuron;
 
     public:
         // builders
@@ -37,7 +43,7 @@ class Neuron
         void add_error(double error);
 
         // use
-        void link(Neuron* from, double weight);
+        void link(Neuron &from, double weight);
         void compute();
         void sync();
 

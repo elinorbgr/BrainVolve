@@ -13,8 +13,8 @@ SUITE(Neuron)
         Neuron input2 = Neuron::input_neuron();
         Neuron out = Neuron(&neural::af::linear);
 
-        out.link(&input1, 2.0);
-        out.link(&input2, 3.0);
+        out.link(input1, 2.0);
+        out.link(input2, 3.0);
         out.set_bias(-4.0);
 
         input1.set_value(1.0);

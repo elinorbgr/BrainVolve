@@ -1,75 +1,14 @@
 #include "neural/neuron.hpp"
 
 /*
- * Neuron class impementation.
+ * Neuron Class implementation
  */
 
-// Constructor
+// Constructors
 
 neural::Neuron::Neuron(const neural::activation_func *afunc):
-    m_afunc(afunc)
+    m_ineuron(new NeuronData(afunc))
 {
-}
-
-// Getters
-
-double neural::Neuron::get_bias() const
-{
-    return m_bias;
-}
-
-double neural::Neuron::get_value() const
-{
-    return m_value;
-}
-
-// Setters
-
-void neural::Neuron::set_value(double value)
-{
-    m_value = value;
-}
-
-void neural::Neuron::set_bias(double bias)
-{
-    m_bias = bias;
-}
-
-void neural::Neuron::add_error(double error)
-{
-    m_error_buffer += error;
-}
-
-// Use
-
-void neural::Neuron::link(Neuron* from, double weight)
-{
-    m_inputs.push_back(std::make_pair(from, weight));
-}
-
-void neural::Neuron::compute()
-{
-    double x = m_bias;
-    for( auto p : m_inputs )
-    {
-        x += p.second * p.first->get_value();
-    }
-    m_value_buffer = m_afunc->first(x);
-    double e = m_error * m_afunc->second(x);
-    m_bias += e;
-    for( auto p : m_inputs )
-    {
-        p.first->add_error(p.second * e);
-        p.second += e * p.first->get_value();
-    }
-}
-
-void neural::Neuron::sync()
-{
-    m_value = m_value_buffer;
-    m_value_buffer = 0.0;
-    m_error = m_error_buffer;
-    m_error_buffer = 0.0;
 }
 
 neural::Neuron neural::Neuron::input_neuron()
@@ -77,3 +16,63 @@ neural::Neuron neural::Neuron::input_neuron()
     return Neuron(&neural::af::zero);
 }
 
+// Getters
+
+double neural::Neuron::get_bias() const
+{
+    return m_ineuron->bias;
+}
+
+double neural::Neuron::get_value() const
+{
+    return m_ineuron->value;
+}
+
+// Setters
+
+void neural::Neuron::set_value(double value)
+{
+    m_ineuron->value = value;
+}
+
+void neural::Neuron::set_bias(double bias)
+{
+    m_ineuron->bias = bias;
+}
+
+void neural::Neuron::add_error(double error)
+{
+    m_ineuron->error_buffer += error;
+}
+
+// Use
+
+void neural::Neuron::link(Neuron &from, double weight)
+{
+    m_ineuron->inputs.push_back(std::make_pair(from.m_ineuron.get(), weight));
+}
+
+void neural::Neuron::compute()
+{
+    double x = m_ineuron->bias;
+    for( auto p : m_ineuron->inputs )
+    {
+        x += p.second * p.first->value;
+    }
+    m_ineuron->value_buffer = m_ineuron->afunc->first(x);
+    double e = m_ineuron->error * m_ineuron->afunc->second(x);
+    m_ineuron->bias += e;
+    for( auto p : m_ineuron->inputs )
+    {
+        p.first->error += p.second * e;
+        p.second += e * p.first->value;
+    }
+}
+
+void neural::Neuron::sync()
+{
+    m_ineuron->value = m_ineuron->value_buffer;
+    m_ineuron->value_buffer = 0.0;
+    m_ineuron->error = m_ineuron->error_buffer;
+    m_ineuron->error_buffer = 0.0;
+}
