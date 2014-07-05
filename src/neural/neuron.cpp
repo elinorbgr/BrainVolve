@@ -64,7 +64,7 @@ void neural::Neuron::compute()
     m_ineuron->bias += e;
     for( auto &p : m_ineuron->inputs )
     {
-        p.first->error += p.second * e;
+        p.first->error_buffer += p.second * e;
         p.second += e * p.first->value;
     }
 }
