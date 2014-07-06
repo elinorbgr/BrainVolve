@@ -2,7 +2,7 @@
 
 #include "parser.hpp"
 
-bool is_valid_genom(std::string str)
+bool is_valid_genom(const std::string &str)
 {
     for(char c : str)
         if(!(c >= '0' && c <= '9') &&
@@ -19,7 +19,7 @@ bool is_valid_genom(std::string str)
  * if no label is found, iterator remains at firt invalid char
  */
 
-std::pair<std::string, unsigned int> parse_neuron_label(std::string::iterator &from, std::string::iterator &endit)
+std::pair<std::string, unsigned int> parse_neuron_label(std::string::const_iterator &from, std::string::const_iterator &endit)
 {
     std::string name = "";
     unsigned int value = 0;
@@ -54,7 +54,7 @@ std::pair<std::string, unsigned int> parse_neuron_label(std::string::iterator &f
 
 }
 
-std::vector<std::pair<std::string, unsigned int> > neurons_from_genome(std::string str)
+std::vector<std::pair<std::string, unsigned int> > neurons_from_genome(const std::string &str)
 {
     // A neuron id is in the form :
     // '+(A-Z0-9)*(a-z)'
@@ -76,7 +76,7 @@ std::vector<std::pair<std::string, unsigned int> > neurons_from_genome(std::stri
     return neurons;
 }
 
-std::vector<std::pair<std::pair<std::string, std::string>, int> > links_from_genome(std::string str)
+std::vector<std::pair<std::pair<std::string, std::string>, int> > links_from_genome(const std::string &str)
 {
     std::vector<std::pair<std::pair<std::string, std::string>, int> > links;
     for(auto it = str.begin(), endit = str.end(); it != endit;)

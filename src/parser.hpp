@@ -11,7 +11,7 @@
  * Checks if a genome is ine the correct alphabet :
  * alphanumerix or '-' or '+'
  */
-bool is_valid_genom(std::string str);
+bool is_valid_genom(const std::string &str);
 
 /*
  * Returns a vector of (label, value) descritpion of neurons
@@ -19,7 +19,7 @@ bool is_valid_genom(std::string str);
  * Undefined behaviour if this requirement is not met.
  */
 
-std::vector<std::pair<std::string, unsigned int> > neurons_from_genome(std::string str);
+std::vector<std::pair<std::string, unsigned int> > neurons_from_genome(const std::string &str);
 
 /*
  * Returns a vector of ((label_from, label_to), weight) description of neuron connections
@@ -27,6 +27,6 @@ std::vector<std::pair<std::string, unsigned int> > neurons_from_genome(std::stri
  * Undefined behavious if this requirement is not met.
  */
 
-std::vector<std::pair<std::pair<std::string, std::string>, int> > links_from_genome(std::string str);
+std::vector<std::pair<std::pair<std::string, std::string>, int> > links_from_genome(const std::string &str);
 
 #endif // ALIFE_PERSER_HPP
