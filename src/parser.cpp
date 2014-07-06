@@ -37,7 +37,7 @@ std::pair<std::string, unsigned int> parse_neuron_label(std::string::iterator &f
         }
         else if(c >= 'a' && c <= 'z')
         {
-            name += c;
+            name = c + name;
             ++from;
             return std::make_pair(name, value);
         }
@@ -89,6 +89,7 @@ std::vector<std::pair<std::pair<std::string, std::string>, int> > links_from_gen
         }
         ++it;
         auto neuron1 = parse_neuron_label(it, endit);
+        // check we indeed have 2 neurons
         if(neuron1.first.empty())
             continue;
         auto neuron2 = parse_neuron_label(it, endit);
