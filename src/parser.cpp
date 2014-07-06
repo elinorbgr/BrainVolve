@@ -59,12 +59,14 @@ std::vector<std::pair<std::string, unsigned int> > neurons_from_genome(std::stri
     // A neuron id is in the form :
     // '+(A-Z0-9)*(a-z)'
     std::vector<std::pair<std::string, unsigned int> > neurons;
-    for(auto it = str.begin(), endit = str.end(); it != endit; it++)
+    for(auto it = str.begin(), endit = str.end(); it != endit;)
     {
         if(*it != '+')
+        {
             // not the begining of a neuron
+            ++it;
             continue;
-
+        }
         ++it;
         auto neuron = parse_neuron_label(it, endit);
         if(neuron.first.empty())

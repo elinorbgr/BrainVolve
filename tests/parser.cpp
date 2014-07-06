@@ -19,7 +19,7 @@ SUITE(parser)
 
     TEST(NeuronListTestCase)
     {
-        auto neurons = neurons_from_genome("-zeKU89+ZH73H7c++9UNZ7e+IOU+u73");
+        auto neurons = neurons_from_genome("-zeKU89+ZH73H7c++9UNZ7e-+IOU+u73");
         CHECK_EQUAL(3, neurons.size());
         CHECK_EQUAL("ZHHc", neurons[0].first);
         CHECK_EQUAL(737, neurons[0].second);
@@ -32,7 +32,7 @@ SUITE(parser)
     TEST(LinkListTestCase)
     {
         // Yeah, a big part of the genome is not parsed at all
-        auto links = links_from_genome("+ehnc675Nai-YH8e76zhdoTID-879h-7TkU8Jk-ZE3GKXJ7nhBCnany-UZ867YEnrzeZEcxuDHgnkzc");
+        auto links = links_from_genome("+ehnc675Nai-YH8e76zhdoTID-879h+-7TkU8Jk--ZE3GKXJ7nh+BCnany-UZ867YEnrz++eZEcxuDHgnkzc");
         CHECK_EQUAL(4, links.size());
         CHECK_EQUAL("YHe", links[0].first.first);
         CHECK_EQUAL("z", links[0].first.second);
