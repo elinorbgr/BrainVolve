@@ -73,3 +73,28 @@ std::vector<std::pair<std::string, unsigned int> > neurons_from_genome(std::stri
     }
     return neurons;
 }
+
+std::vector<std::pair<std::pair<std::string, std::string>, int> > links_from_genome(std::string str)
+{
+    std::vector<std::pair<std::pair<std::string, std::string>, int> > links;
+    for(auto it = str.begin(), endit = str.end(); it != endit;)
+    {
+        if(*it != '-')
+        {
+            // not the begining of a link
+            ++it;
+            continue;
+        }
+        ++it;
+        auto neuron1 = parse_neuron_label(it, endit);
+        if(neuron1.first.empty())
+            continue;
+        auto neuron2 = parse_neuron_label(it, endit);
+        if(neuron2.first.empty())
+            continue;
+        links.push_back(std::make_pair(
+            std::make_pair(neuron1.first, neuron2.first),
+            (int)neuron1.second - (int)neuron2.second));
+    }
+    return links;
+}

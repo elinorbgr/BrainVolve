@@ -21,4 +21,12 @@ bool is_valid_genom(std::string str);
 
 std::vector<std::pair<std::string, unsigned int> > neurons_from_genome(std::string str);
 
+/*
+ * Returns a vector of ((label_from, label_to), weight) description of neuron connections
+ * defined in this genome. Assumes is_valid_genom(str) is true.
+ * Undefined behavious if this requirement is not met.
+ */
+
+std::vector<std::pair<std::pair<std::string, std::string>, int> > links_from_genome(std::string str);
+
 #endif // ALIFE_PERSER_HPP
