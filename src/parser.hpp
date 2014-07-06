@@ -29,4 +29,14 @@ std::vector<std::pair<std::string, unsigned int> > neurons_from_genome(const std
 
 std::vector<std::pair<std::pair<std::string, std::string>, int> > links_from_genome(const std::string &str);
 
+/*
+ * Returns the activation function depending of special char
+ */
+
+const neural::activation_func* af_from_gene(char c);
+
+enum class neuron_kind { input, output, internal };
+
+neuron_kind kind_from_gene(char c);
+
 #endif // ALIFE_PERSER_HPP
