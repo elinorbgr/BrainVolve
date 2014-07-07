@@ -14,6 +14,12 @@
 bool is_valid_genom(const std::string &str);
 
 /*
+ * Parses a single neuron
+ */
+
+std::pair<std::string, unsigned int> parse_neuron_label(std::string::const_iterator &from, std::string::const_iterator &endit);
+
+/*
  * Returns a vector of (label, value) descritpion of neurons
  * defined in this genome. Assumes is_valid_genom(str) is true.
  * Undefined behaviour if this requirement is not met.

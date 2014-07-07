@@ -45,13 +45,21 @@ Brain::Brain(std::string genome,
     // first get hard data
     for(std::string s : hard_inputs)
     {
+        // these labels have not been parsed
+        std::string::const_iterator a = s.begin(), b = s.end();
+        auto parsed = parse_neuron_label(a, b);
         inputs.push_back(neural::Neuron::input_neuron());
-        input_labels.push_back(s);
+        input_labels.push_back(parsed.first);
     }
     for(std::string s : hard_outputs)
     {
-        outputs.push_back(neural::Neuron(af_from_gene(s[0])));
-        output_labels.push_back(s);
+        // same here
+        std::string::const_iterator a = s.begin(), b = s.end();
+        auto parsed = parse_neuron_label(a, b);
+        neural::Neuron tmp = neural::Neuron(af_from_gene(parsed.first[0]));
+        tmp.set_bias(parsed.second / 100.0);
+        outputs.push_back(std::move(tmp));
+        output_labels.push_back(parsed.first);
     }
     // dispatchers:
     auto neuron_dispatcher = [&inputs, &outputs, &internals] (neuron_kind kind) -> std::vector<neural::Neuron>& {
