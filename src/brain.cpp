@@ -53,113 +53,85 @@ Brain::Brain(std::string genome,
         outputs.push_back(neural::Neuron(af_from_gene(s[0])));
         output_labels.push_back(s);
     }
+    // dispatchers:
+    auto neuron_dispatcher = [&inputs, &outputs, &internals] (neuron_kind kind) -> std::vector<neural::Neuron>& {
+        switch(kind)
+        {
+            case neuron_kind::input:
+                return inputs;
+            case neuron_kind::output:
+                return outputs;
+            default:
+                return internals;
+        }
+    };
+    auto label_dispatcher = [&input_labels, &output_labels, &internal_labels] (neuron_kind kind) -> std::vector<std::string>& {
+        switch(kind)
+        {
+            case neuron_kind::input:
+                return input_labels;
+            case neuron_kind::output:
+                return output_labels;
+            default:
+                return internal_labels;
+        }
+    };
     // now extract neuron from genome
     auto neuron_labels = neurons_from_genome(genome);
     for (auto n : neuron_labels)
     {
-        int index;
-        switch(kind_from_gene(n.first[0]))
+        neuron_kind kind = kind_from_gene(n.first[0]);
+        int index = index_of(n.first, label_dispatcher(kind));
+        if(index == -1)
         {
-            case neuron_kind::input:
-                index = index_of(n.first, input_labels);
-                if (index == -1)
-                {
-                    input_labels.push_back(n.first);
-                    inputs.push_back(neural::Neuron(af_from_gene(n.first[0])));
-                    m_input_channels.push_back(n.second);
-                }
-                break;
-            case neuron_kind::output:
-                index = index_of(n.first, output_labels);
-                if (index == -1)
-                {
-                    output_labels.push_back(n.first);
-                    outputs.push_back(neural::Neuron(af_from_gene(n.first[0])));
+            label_dispatcher(kind).push_back(n.first);
+            if(kind == neuron_kind::input)
+            {
+                inputs.push_back(neural::Neuron::input_neuron());
+                m_input_channels.push_back(n.second);
+            }
+            else
+            {
+                neural::Neuron tmp = neural::Neuron(af_from_gene(n.first[0]));
+                if(kind == neuron_kind::output)
                     m_output_channels.push_back(n.second);
-                }
                 else
-                {
-                    outputs[index].set_bias(n.second / 100.0);
-                }
-                break;
-            default:
-                index = index_of(n.first, internal_labels);
-                if (index == -1)
-                {
-                    internal_labels.push_back(n.first);
-                    neural::Neuron tmp = neural::Neuron(af_from_gene(n.first[0]));
                     tmp.set_bias(n.second / 100.0);
-                    internals.push_back(std::move(tmp));
-                }
-                else
-                {
-                    internals[index].set_bias(n.second / 100.0);
-                }
+                neuron_dispatcher(kind).push_back(std::move(tmp));
+            }
+
+        }
+        else
+        {
+            neuron_dispatcher(kind)[index].set_bias(n.second / 100.0);
         }
     }
     // now extract links
     auto links = links_from_genome(genome);
     for(auto l : links)
     {
-        neural::Neuron *from = nullptr;
-        neural::Neuron *to = nullptr;
-        unsigned int best_from;
-        unsigned int best_to;
-        size_t i = 0;
-        // search in inputs
-        for(auto s : input_labels)
+        neural::Neuron *neuronptr[2] = {nullptr, nullptr};
+        // 'from' and 'to' neuron are handled the same way :
+        for(int n = 0; n<2; n++)
         {
-            unsigned int pr = prefix_level(l.first.first, s);
-            if(pr > best_from)
+            std::string label = (n == 0 ? l.first.first : l.first.second );
+            unsigned int best = 0;
+            size_t i = 0;
+            neuron_kind kind = kind_from_gene(label[0]);
+            for(auto s : label_dispatcher(kind))
             {
-                from = &inputs[i];
-                best_from = pr;
+                unsigned int pr = prefix_level(label, s);
+                if(pr > best)
+                {
+                    neuronptr[n] = &neuron_dispatcher(kind)[i];
+                    best = pr;
+                }
+                ++i;
             }
-            pr = prefix_level(l.first.second, s);
-            if(pr > best_to)
-            {
-                to = &inputs[i];
-                best_to = pr;
-            }
-            ++i;
         }
-        i = 0;
-        for(auto s : output_labels)
-        {
-            unsigned int pr = prefix_level(l.first.first, s);
-            if(pr > best_from)
-            {
-                from = &outputs[i];
-                best_from = pr;
-            }
-            pr = prefix_level(l.first.second, s);
-            if(pr > best_to)
-            {
-                to = &outputs[i];
-                best_to = pr;
-            }
-            ++i;
-        }
-        i = 0;
-        for(auto s : internal_labels)
-        {
-            unsigned int pr = prefix_level(l.first.first, s);
-            if(pr > best_from)
-            {
-                from = &internals[i];
-                best_from = pr;
-            }
-            pr = prefix_level(l.first.second, s);
-            if(pr > best_to)
-            {
-                to = &internals[i];
-                best_to = pr;
-            }
-            ++i;
-        }
-        if(from == nullptr || to == nullptr)
+        if(neuronptr[0] == nullptr || neuronptr[1] == nullptr)
             continue;
-        (*to).link(*from, l.second / 100.0);
+        (*(neuronptr[1])).link(*(neuronptr[0]), l.second / 100.0);
     }
     // network is build, store it now
     m_net.emplace_input_neurons(inputs);
