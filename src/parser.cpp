@@ -102,31 +102,31 @@ std::vector<std::pair<std::pair<std::string, std::string>, int> > links_from_gen
     return links;
 }
 
-const neural::activation_func* af_from_gene(char c)
+const neural::activation_func &af_from_gene(char c)
 {
     if(c < 'g' || c > 'z')
         // invalid or input neuron
-        return &neural::af::zero;
+        return neural::af::zero;
     if(c < 'x')
     {
         // classic neuron
         if(c < 'n')
-            return &neural::af::sigmoid;
+            return neural::af::sigmoid;
         else if(c < 'u')
-            return &neural::af::tanh;
+            return neural::af::tanh;
         else
-            return &neural::af::step;
+            return neural::af::step;
     }
     else
     {
         switch(c)
         {
             case 'x':
-                return &neural::af::sigmoid;
+                return neural::af::sigmoid;
             case 'y':
-                return &neural::af::tanh;
+                return neural::af::tanh;
             default:
-                return &neural::af::step;
+                return neural::af::step;
         }
     }
 }

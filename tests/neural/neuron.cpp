@@ -23,7 +23,7 @@ SUITE(Neuron)
         BasicNetworkFixture():
             input1(Neuron::input_neuron()),
             input2(Neuron::input_neuron()),
-            out(&neural::af::linear)
+            out(neural::af::linear)
         {
             out.link(input1, 2.0);
             out.link(input2, 3.0);

@@ -16,10 +16,10 @@ SUITE(Network)
             Neuron input1 = Neuron::input_neuron();
             Neuron input2 = Neuron::input_neuron();
             Neuron input3 = Neuron::input_neuron();
-            Neuron internal1(&af::linear);
-            Neuron internal2(&af::linear);
-            Neuron out1(&af::linear);
-            Neuron out2(&af::linear);
+            Neuron internal1(af::linear);
+            Neuron internal2(af::linear);
+            Neuron out1(af::linear);
+            Neuron out2(af::linear);
             // build the network
             internal1.set_bias(1.0);
             internal1.link(input1, 1.0);

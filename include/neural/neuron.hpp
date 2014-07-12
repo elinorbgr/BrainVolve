@@ -25,13 +25,13 @@ class Neuron
             double bias;
             const activation_func *afunc;
             std::vector<std::pair<NeuronData*,double> > inputs;
-            NeuronData(const activation_func *afunc):afunc(afunc){}
+            NeuronData(const activation_func &afunc):afunc(&afunc){}
         };
         std::unique_ptr<NeuronData> m_ineuron;
 
     public:
         // builders
-        Neuron(const activation_func *afunc);
+        Neuron(const activation_func &afunc);
 
         // getters
         double get_bias() const;

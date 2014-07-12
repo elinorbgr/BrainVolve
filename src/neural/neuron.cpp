@@ -6,14 +6,14 @@
 
 // Constructors
 
-neural::Neuron::Neuron(const neural::activation_func *afunc):
+neural::Neuron::Neuron(const neural::activation_func &afunc):
     m_ineuron(new NeuronData(afunc))
 {
 }
 
 neural::Neuron neural::Neuron::input_neuron()
 {
-    return Neuron(&neural::af::zero);
+    return Neuron(neural::af::zero);
 }
 
 // Getters

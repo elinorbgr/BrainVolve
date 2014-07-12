@@ -39,7 +39,7 @@ std::vector<std::pair<std::pair<std::string, std::string>, int> > links_from_gen
  * Returns the activation function depending of special char
  */
 
-const neural::activation_func* af_from_gene(char c);
+const neural::activation_func &af_from_gene(char c);
 
 enum class neuron_kind { input_ampl, input_dir, output, internal };
 
