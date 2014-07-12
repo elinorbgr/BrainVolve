@@ -1,4 +1,4 @@
-project("alife_tests")
+project("brainvolve_tests")
 
 add_subdirectory(neural)
 
