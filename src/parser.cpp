@@ -104,40 +104,39 @@ std::vector<std::pair<std::pair<std::string, std::string>, int> > links_from_gen
 
 const neural::activation_func* af_from_gene(char c)
 {
-    if(c < 'a' || c > 'z')
+    if(c < 'g' || c > 'z')
+        // invalid or input neuron
         return &neural::af::zero;
-    if(c > 'c' && c < 'x')
+    if(c < 'x')
     {
         // classic neuron
-        if(c < 'l')
+        if(c < 'n')
             return &neural::af::sigmoid;
-        else if(c < 't')
+        else if(c < 'u')
             return &neural::af::tanh;
         else
             return &neural::af::step;
     }
     else
     {
-        // input or output
         switch(c)
         {
-            case 'a':
             case 'x':
                 return &neural::af::sigmoid;
-            case 'b':
             case 'y':
                 return &neural::af::tanh;
             default:
                 return &neural::af::step;
         }
     }
-
 }
 
 neuron_kind kind_from_gene(char c)
 {
     if(c <= 'c')
-        return neuron_kind::input;
+        return neuron_kind::input_ampl;
+    else if(c <= 'f')
+        return neuron_kind::input_dir;
     else if(c >= 'x')
         return neuron_kind::output;
     else

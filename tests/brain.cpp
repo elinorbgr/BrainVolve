@@ -19,13 +19,14 @@ SUITE(brain)
     TEST(CustomIOBrainTestCase)
     {
         // A simple brain with genetic IO
-        Brain brain("+P34Ub-P2UbSEx-MAMaS1Ex+Y22Ay-P1UbTAz+42TAz",
+        Brain brain("+P34Ub-P2UbSEx-MAMaS1Ex+LO32f+Y22Ay-P1UbTAz+42TAz",
                     {"MAMa"},
                     {"SEx"});
-        CHECK_EQUAL(1, brain.get_input_channels().size());
-        CHECK_EQUAL(34, brain.get_input_channels()[0]);
+        CHECK_EQUAL(2, brain.get_input_channels().size());
+        CHECK_ARRAY_EQUAL(std::vector<int>({34, -32}),
+                          brain.get_input_channels(), 2);
         CHECK_EQUAL(2, brain.get_output_channels().size());
-        CHECK_ARRAY_EQUAL(std::vector<size_t>({22, 42}),
+        CHECK_ARRAY_EQUAL(std::vector<int>({22, 42}),
                           brain.get_output_channels(), 2);
         auto out = brain.answer({2.0, 1.0});
         CHECK_EQUAL(3, out.size());

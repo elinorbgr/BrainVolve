@@ -65,7 +65,8 @@ Brain::Brain(std::string genome,
     auto neuron_dispatcher = [&inputs, &outputs, &internals] (neuron_kind kind) -> std::vector<neural::Neuron>& {
         switch(kind)
         {
-            case neuron_kind::input:
+            case neuron_kind::input_ampl:
+            case neuron_kind::input_dir:
                 return inputs;
             case neuron_kind::output:
                 return outputs;
@@ -76,7 +77,8 @@ Brain::Brain(std::string genome,
     auto label_dispatcher = [&input_labels, &output_labels, &internal_labels] (neuron_kind kind) -> std::vector<std::string>& {
         switch(kind)
         {
-            case neuron_kind::input:
+            case neuron_kind::input_ampl:
+            case neuron_kind::input_dir:
                 return input_labels;
             case neuron_kind::output:
                 return output_labels;
@@ -93,10 +95,13 @@ Brain::Brain(std::string genome,
         if(index == -1)
         {
             label_dispatcher(kind).push_back(n.first);
-            if(kind == neuron_kind::input)
+            if(kind == neuron_kind::input_ampl || kind == neuron_kind::input_dir)
             {
                 inputs.push_back(neural::Neuron::input_neuron());
-                m_input_channels.push_back(n.second);
+                if(kind == neuron_kind::input_ampl)
+                    m_input_channels.push_back(n.second);
+                else
+                    m_input_channels.push_back(-n.second);
             }
             else
             {
@@ -167,12 +172,12 @@ void Brain::punish(std::vector<double> errors)
     m_net.step();
 }
 
-std::vector<size_t> Brain::get_input_channels()
+std::vector<int> Brain::get_input_channels()
 {
     return m_input_channels;
 }
 
-std::vector<size_t> Brain::get_output_channels()
+std::vector<int> Brain::get_output_channels()
 {
     return m_output_channels;
 }
