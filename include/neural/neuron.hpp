@@ -23,9 +23,10 @@ class Neuron
             double value_buffer;
             double error_buffer;
             double bias;
+            double rate;
             const activation_func *afunc;
             std::vector<std::pair<NeuronData*,double> > inputs;
-            NeuronData(const activation_func &afunc):afunc(&afunc){}
+            NeuronData(const activation_func &afunc):rate(1.0),afunc(&afunc){}
         };
         std::unique_ptr<NeuronData> m_ineuron;
 
@@ -38,6 +39,7 @@ class Neuron
         double get_value() const;
 
         // setters
+        void set_rate(double rate);
         void set_value(double value);
         void set_bias(double bias);
         void add_error(double error);

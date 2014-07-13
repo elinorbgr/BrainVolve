@@ -30,6 +30,11 @@ double neural::Neuron::get_value() const
 
 // Setters
 
+void neural::Neuron::set_rate(double rate)
+{
+    m_ineuron->rate = rate;
+}
+
 void neural::Neuron::set_value(double value)
 {
     m_ineuron->value = value;
@@ -61,11 +66,11 @@ void neural::Neuron::compute()
     }
     m_ineuron->value_buffer = m_ineuron->afunc->first(x);
     double e = m_ineuron->error * m_ineuron->afunc->second(x);
-    m_ineuron->bias += e;
+    m_ineuron->bias += e * m_ineuron->rate;
     for( auto &p : m_ineuron->inputs )
     {
         p.first->error_buffer += p.second * e;
-        p.second += e * p.first->value;
+        p.second += e * p.first->value * m_ineuron->rate;
     }
 }
 
