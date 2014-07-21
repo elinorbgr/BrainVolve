@@ -12,11 +12,11 @@ class Brain
         neural::Network m_net;
         std::vector<int> m_input_channels;
         std::vector<int> m_output_channels;
-        size_t m_hard_input_count;
-        size_t m_hard_output_count;
+        const size_t m_hard_input_count;
+        const size_t m_hard_output_count;
 
     public:
-        Brain(std::string genome,
+        Brain(const std::string &genome,
               const std::vector<std::string> &hard_inputs,
               const std::vector<std::string> &hard_outputs);
         std::vector<double> answer(std::vector<double> inputs);

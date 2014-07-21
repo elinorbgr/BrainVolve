@@ -29,12 +29,12 @@ int index_of(std::string str, const std::vector<std::string> &vec)
     return -1;
 }
 
-Brain::Brain(std::string genome,
+Brain::Brain(const std::string &genome,
              const std::vector<std::string> &hard_inputs,
-             const std::vector<std::string> &hard_outputs)
+             const std::vector<std::string> &hard_outputs):
+    m_hard_input_count(hard_inputs.size()),
+    m_hard_output_count(hard_outputs.size())
 {
-    m_hard_input_count = hard_inputs.size();
-    m_hard_output_count = hard_outputs.size();
 
     std::vector<neural::Neuron> inputs;
     std::vector<std::string> input_labels;
