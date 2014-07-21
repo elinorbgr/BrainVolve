@@ -26,7 +26,7 @@ class Neuron
             double rate;
             const activation_func *afunc;
             std::vector<std::pair<NeuronData*,double> > inputs;
-            NeuronData(const activation_func &afunc):rate(1.0),afunc(&afunc){}
+            NeuronData(const activation_func &func):rate(1.0),afunc(&func){}
         };
         std::unique_ptr<NeuronData> m_ineuron;
 
