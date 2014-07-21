@@ -15,7 +15,7 @@ class Pheromone
         Pheromone(int channel_id, double xpos, double ypos, double ampl);
         void grow();
 
-        double distance_to(double ox, double oy);
+        double distance_to(double ox, double oy)  const;
         double get_ampl() const;
         double radius() const;
 };

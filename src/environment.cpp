@@ -13,7 +13,7 @@ void Pheromone::grow()
     m_radius += 1.0;
 }
 
-double Pheromone::distance_to(double ox, double oy)
+double Pheromone::distance_to(double ox, double oy) const
 {
     return std::sqrt(std::pow(ox-x, 2) + std::pow(oy-y, 2));
 }

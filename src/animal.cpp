@@ -8,7 +8,7 @@ Animal::Animal(const std::string &genome, double x, double y, double dir):
 {
 }
 
-void Animal::step(std::list<Pheromone> &env)
+std::vector<Pheromone> Animal::step(const std::list<Pheromone> &env)
 {
     // setup input vector
     std::vector<int> input_ids = m_brain.get_input_channels();
@@ -50,12 +50,13 @@ void Animal::step(std::list<Pheromone> &env)
     std::vector<double> outputs = m_brain.answer(inputs);
 
     // create new pheromones
+    std::vector<Pheromone> created;
     std::vector<int> output_ids = m_brain.get_output_channels();
     auto outputs_it = outputs.begin() + 2;
     for(int id : output_ids)
     {
         if(*outputs_it > 0.0)
-            env.push_back(Pheromone(id, m_x, m_y, *outputs_it));
+            created.push_back(Pheromone(id, m_x, m_y, *outputs_it));
     }
 
     // move the animal
@@ -66,6 +67,8 @@ void Animal::step(std::list<Pheromone> &env)
     m_x += speed * std::cos(m_dir);
     m_y += speed * std::sin(m_dir);
     m_energy -= std::abs(speed) * 0.01;
+
+    return created;
 }
 
 void Animal::feed(double amount)
