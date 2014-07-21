@@ -20,6 +20,8 @@ class Animal
     public:
         Animal(const std::string &genome, double x, double y, double dir);
         void step(std::list<Pheromone> &env);
+        void feed(double amount);
+        void hurt(double amount);
 };
 
 #endif // ALIFE_ANIMAL_HPP

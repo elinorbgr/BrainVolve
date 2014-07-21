@@ -65,4 +65,15 @@ void Animal::step(std::list<Pheromone> &env)
     m_dir += (vb - va) * 0.5;
     m_x += speed * std::cos(m_dir);
     m_y += speed * std::sin(m_dir);
+    m_energy -= std::abs(speed) * 0.01;
+}
+
+void Animal::feed(double amount)
+{
+    m_energy += amount;
+}
+
+void Animal::hurt(double amount)
+{
+    m_energy -= amount;
 }
