@@ -22,6 +22,8 @@ class Animal
         std::vector<Pheromone> step(const std::list<Pheromone> &env);
         void feed(double amount);
         void hurt(double amount);
+        double get_x() const;
+        double get_y() const;
 };
 
 #endif // ALIFE_ANIMAL_HPP

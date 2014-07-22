@@ -80,3 +80,13 @@ void Animal::hurt(double amount)
 {
     m_energy -= amount;
 }
+
+double Animal::get_x() const
+{
+    return m_x;
+}
+
+double Animal::get_y() const
+{
+    return m_y;
+}
